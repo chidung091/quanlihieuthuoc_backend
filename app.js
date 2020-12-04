@@ -15,8 +15,9 @@ require('../qlht/server/models/userModel.js');
 require('../qlht/server/models/course.js');
 require('../qlht/server/models/medicineModel.js');
 var mongoDB = 'mongodb://127.0.0.1/chamcong';
-mongoose.connect(mongoDB);
+mongoose.connect(mongoDB,{ useNewUrlParser: true,useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
+mongoose.set('useCreateIndex', true);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

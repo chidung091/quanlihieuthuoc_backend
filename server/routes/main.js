@@ -14,6 +14,7 @@ module.exports = function(app) {
 
    app.route('/api/update/:id').put(userHandlers.loginRequired,Course.updateByID);
 
+   app.route('/api/allcourse/:pa').get(userHandlers.loginRequired,Course.readAllCourse);
    app.route('/api/nhapthuoc').post(userHandlers.loginRequired,Medicine.createMedicine);
 
    app.route('/auth/register')

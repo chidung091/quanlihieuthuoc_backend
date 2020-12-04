@@ -43,6 +43,22 @@ exports.readCoursebyID = function(req,res){
     });
   });
 }
+exports.readAllCourse = function(req,res){
+  let perPage = 10;
+  let page = req.params.pa || 1;
+  Course.find().skip((perPage * page)- perPage).limit(perPage).exec((err,allCourse) =>{
+    Course.countDocuments((err,count) => {
+      if (err) return next(err);
+        res.status(200).json({
+          success: true,
+          message: 'Tổng số cuốn sách là:',
+          pagenow: page,
+          totalpages: Math.ceil(count/10),
+          Course: allCourse,
+        });
+    });
+  });
+}
 exports.searchByName = function(req,res){
   Course.find({title: { $regex: '.*' + req.body.name + '.*'}}).then((allCourse)=>{
     res.status(200).json({

@@ -4,7 +4,8 @@
   "description": "Chưa có",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.js"
   },
   "author": "Nguyễn Vũ Chí Dũng",
   "license": "ISC",
@@ -16,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.16",
     "morgan": "^1.10.0",
+    "nodemon": "^2.0.6",
     "serve": "^11.3.2"
   }
 }
