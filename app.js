@@ -11,8 +11,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));
 var mongoose = require('mongoose');
-require('../chamcong_mongo/server/models/userModel.js');
-require('../chamcong_mongo/server/models/course.js');
+require('../qlht/server/models/userModel.js');
+require('../qlht/server/models/course.js');
 var mongoDB = 'mongodb://127.0.0.1/chamcong';
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
     next();
   }
 });
-var routes = require('../chamcong_mongo/server/routes/main.js');
+var routes = require('../qlht/server/routes/main.js');
 routes(app);
 app.use(function(req, res) {
   res.status(404).send({ url: req.originalUrl + ' not found' })
