@@ -16,7 +16,7 @@ exports.createMedicine = function(req,res){
         soluong: req.body.soluong,
         danhmuc: req.body.danhmuc,
     });
-    return medicine.save.then((newMedicine) => {
+    return medicine.save().then((newMedicine) => {
         return res.status(201).json({
             success: true,
             message: 'Đã nhập hàng thành công',
@@ -35,7 +35,7 @@ exports.searchByName = function(req,res){
     Medicine.find({title: { $regex: '.*' + req.body.name + '.*'}}).then((allMedicine) => {
         res.status(200).json({
             success: true,
-            message: 'Danh sach mat hang gom',
+            message: 'Danh sach mat hang gom:',
             Medicine: allMedicine,
         })
     }).catch((error)=>{

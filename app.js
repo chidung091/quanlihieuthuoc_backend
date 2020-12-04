@@ -13,6 +13,7 @@ app.use(logger('dev'));
 var mongoose = require('mongoose');
 require('../qlht/server/models/userModel.js');
 require('../qlht/server/models/course.js');
+require('../qlht/server/models/medicineModel.js');
 var mongoDB = 'mongodb://127.0.0.1/chamcong';
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
