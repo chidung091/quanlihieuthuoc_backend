@@ -32,7 +32,7 @@ exports.createMedicine = function(req,res){
     });
 }
 exports.searchByName = function(req,res){
-    Medicine.find({title: { $regex: '.*' + req.body.name + '.*'}}).then((allMedicine) => {
+    Medicine.find({tenthuoc: { $regex: '.*' + req.body.name + '.*'}}).then((allMedicine) => {
         res.status(200).json({
             success: true,
             message: 'Danh sach mat hang gom:',
@@ -46,3 +46,20 @@ exports.searchByName = function(req,res){
         })
     });
 } 
+exports.searchbyManuName = function(req,res){
+    let perpage = 10;
+    let pag = req.params.pa || 1;
+    Medicine.find({hangthuoc:{ $regex: '.*' + req.body.name + '.*'}}).skip((perpage*pag)-perpage).limit(perpage).then((manuMedicine) => {
+        res.status(200).json({
+            success: true,
+            message: 'Danh sach mat thuoc theo ten nha san xuat la:',
+            Medicine: manuMedicine,
+        });
+    }).catch((error)=>{
+        res.status(500).json({
+            success: true,
+            message: 'Khong tim thay san pham nao',
+            err: error.message,
+        });
+    });
+}

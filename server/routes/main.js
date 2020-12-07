@@ -16,7 +16,7 @@ module.exports = function(app) {
 
    app.route('/api/allcourse/:pa').get(userHandlers.loginRequired,Course.readAllCourse);
    app.route('/api/nhapthuoc').post(userHandlers.loginRequired,Medicine.createMedicine);
-
+   app.route('/api/timnsx/1').get(userHandlers.loginRequired,Medicine.searchbyManuName);
    app.route('/auth/register')
    	.post(userHandlers.register);
 

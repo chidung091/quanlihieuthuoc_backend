@@ -61,12 +61,19 @@ exports.readAllCourse = function(req,res){
 }
 exports.searchByName = function(req,res){
   Course.find({title: { $regex: '.*' + req.body.name + '.*'}}).then((allCourse)=>{
-    res.status(200).json({
-      success: true,
-      message: 'Thong tin cuon sach co ten la:',
-      Course: allCourse
-    });
-  }).catch((error)=>{
+    if(allCourse.length){
+      res.status(200).json({
+        success: true,
+        message: 'Thong tin cuon sach co ten la:',
+        Course: allCourse
+      });
+    }
+    else{
+      res.status(404).json({
+
+      });
+    } 
+  }).catch(function(error){
     res.status(500).json({
       success: false,
       message: 'Thong tin cuon sach khong ton tai ban yeu a:',
