@@ -5,8 +5,10 @@ const express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
+var cors = require('cors');
 // set up dependencies
 const app = express();
+app.use(cors({credentials:true,origin:true}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));
