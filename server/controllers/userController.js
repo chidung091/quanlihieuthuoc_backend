@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose'),
   jwt = require('jsonwebtoken'),
-  bcrypt = require('bcrypt'),
+  bcrypt = require('bcryptjs'),
   User = mongoose.model('User');
 exports.register = function(req, res) {
     var newUser = new User(req.body);
