@@ -10,9 +10,10 @@ exports.createMedicine = function(req,res){
         _id: mongoose.Types.ObjectId(),
         tenthuoc: req.body.tenthuoc,
         mota: req.body.mota,
-        giathuoc: req.body.giathuoc,
+        giathuocnhap: req.body.giathuocnhap,
+        giathuocban: req.body.giathuocban,
         donvinhap: req.body.donvinhap,
-        hangthuoc: req.body.hangthuoc,
+        nhasanxuat: req.body.nhasanxuat,
         soluong: req.body.soluong,
         danhmuc: req.body.danhmuc,
     });

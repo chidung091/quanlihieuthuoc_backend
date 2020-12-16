@@ -1,21 +1,21 @@
 var mongoose = require('mongoose');
 var jwt = require('jsonwebtoken');
-Course = mongoose.model('Course');
+Userinfo = mongoose.model('Userinfo');
 // create new cause
-exports.createCourse = function(req, res) {
-    const course = new Course({
+exports.createUserinfo = function(req, res) {
+    const Userinfo = new Userinfo({
       _id: mongoose.Types.ObjectId(),
       title: req.body.title,
       description: req.body.description,
     });
     
-    return course
+    return Userinfo
       .save()
-      .then((newCourse) => {
+      .then((newUserinfo) => {
         return res.status(201).json({
           success: true,
           message: 'New cause created successfully',
-          Course: newCourse,
+          Userinfo: newUserinfo,
         });
       })
       .catch((error) => {
@@ -27,72 +27,76 @@ exports.createCourse = function(req, res) {
         });
       });
   }
-exports.readCoursebyID = function(req,res){
+exports.readUserinfobyID = function(req,res){
   const id = req.params.id;
-  Course.findById(id).then((sgCourse) => {
+  Userinfo.findById(id).then((infoUser) => {
     res.status(200).json({
       success: true,
-      message: 'Thong tin cuon sach theo id la:',
-      Course: sgCourse,
+      message: 'Thong tin nguoi dung theo id la:',
+      id: id,
+      Userinfo: infoUser,
     });
   }).catch((error)=>{
     res.status(500).json({
       success: false,
-      message: 'Khong tim thay thong tin cuon sach',
+      message: 'Khong tim thay thong tin nguoi dung:',
       err: error.message,
     });
   });
 }
-exports.readAllCourse = function(req,res){
+exports.readAllUserinfo = function(req,res){
   let perPage = 10;
   let page = req.params.pa || 1;
-  Course.find().skip((perPage * page)- perPage).limit(perPage).exec((err,allCourse) =>{
-    Course.countDocuments((err,count) => {
+  Userinfo.find().skip((perPage * page)- perPage).limit(perPage).exec((err,allUserinfo) =>{
+    Userinfo.countDocuments((err,count) => {
       if (err) return next(err);
         res.status(200).json({
           success: true,
-          message: 'Tổng số cuốn sách là:',
+          message: 'Danh sách người dùng là:',
           pagenow: page,
           totalpages: Math.ceil(count/10),
-          Course: allCourse,
+          Userinfo: allUserinfo,
         });
     });
   });
 }
 exports.searchByName = function(req,res){
-  Course.find({title: { $regex: '.*' + req.body.name + '.*'}}).then((allCourse)=>{
-    if(allCourse.length){
+  Userinfo.find({title: { $regex: '.*' + req.body.name + '.*'}}).then((allUserinfo)=>{
+    if(allUserinfo.length){
       res.status(200).json({
         success: true,
-        message: 'Thong tin cuon sach co ten la:',
-        Course: allCourse
+        message: 'Thong tin nguoi dung co ten la:',
+        name: req.body.name,
+        Userinfo: allUserinfo
       });
     }
     else{
-      res.status(404).json({
-
+      res.status(403).json({
+        success: false,
+        message: 'Khong tim thay nguoi dung co ten la:',
+        name: req.body.name,
       });
     } 
   }).catch(function(error){
     res.status(500).json({
       success: false,
-      message: 'Thong tin cuon sach khong ton tai ban yeu a:',
+      message: 'Thong tin nguoi dung khong ton tai ban yeu a:',
       err: error.message,
     });
   });
 }
-exports.deleteCoursebyID = function(req,res){
+exports.deleteUserinfobyID = function(req,res){
   const id = req.params.id;
-  Course.findByIdAndRemove(id).then((dlCourse) => {
+  Userinfo.findByIdAndRemove(id).then((dlUserinfo) => {
     res.status(200).json({
       success: true,
-      message: 'Cuon sach co id la ${id} da bi xoa :',
-      Course: dlCourse,
+      message: 'Nguoi dung co id la'+id+' da bi xoa :',
+      Userinfo: dlUserinfo,
     });
   }).catch((error)=>{
     res.status(500).json({
       success: false,
-      message: 'Khong tim thay thong tin cuon sach',
+      message: 'Khong tim thay thong tin '+id+'can xoa',
       err: error.message,
     });
   });
@@ -100,16 +104,16 @@ exports.deleteCoursebyID = function(req,res){
 exports.updateByID = function(req,res){
   const id = req.params.id;
   const updateObject = req.body;
-  Course.update({_id:id}, { $set:updateObject}).exec().then(()=>{
+  Userinfo.update({_id:id}, { $set:updateObject}).exec().then(()=>{
     res.status(200).json({
       success: true,
-      message: 'Cuon sach co id la ${id} da duoc cap nhat:',
-      updateCourse: updateObject,
+      message: 'Nguoi dung co id la '+id+'da duoc cap nhat:',
+      updateUserinfo: updateObject,
     });
   }).catch((error)=>{
     res.status(500).json({
       success: false,
-      message: 'Khong the update cuon sach',
+      message: 'Khong the update nguoidung',
       err: error.message,
     })
   });

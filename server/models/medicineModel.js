@@ -12,7 +12,11 @@ const medicineSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    giathuoc:{
+    giathuocnhap:{
+        type: Number,
+        required: true,
+    },
+    giathuocban:{
         type: Number,
         required: true,
     },
@@ -20,7 +24,7 @@ const medicineSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    hangthuoc:{
+    nhasanxuat:{
         type: String,
         required: true,
     },
