@@ -7,19 +7,22 @@ module.exports = function(app) {
    var Bill = require('../controllers/BillController.js');
    app.route('/api/taomon').post(userHandlers.loginRequired,Userinfo.createUserinfo);
 
-   app.route('/api/read/:id').get(userHandlers.loginRequired,Userinfo.readUserinfobyID);
+   app.route('/api/user/:id').get(userHandlers.loginRequired,Userinfo.readUserinfobyID);
 
-   app.route('/api/name').get(userHandlers.loginRequired,Userinfo.searchByName);
+   app.route('/api/user/search').get(userHandlers.loginRequired,Userinfo.searchByName);
 
-   app.route('/api/delete/:id').delete(userHandlers.loginRequired,Userinfo.deleteUserinfobyID);
+   app.route('/api/user/delete/:id').delete(userHandlers.loginRequired,Userinfo.deleteUserinfobyID);
 
-   app.route('/api/update/:id').put(userHandlers.loginRequired,Userinfo.updateByID);
+   app.route('/api/user/update/:id').put(userHandlers.loginRequired,Userinfo.updateByID);
 
-   app.route('/api/allUserinfo/:pa').get(userHandlers.loginRequired,Userinfo.readAllUserinfo);
-   app.route('/api/nhapthuoc').post(userHandlers.loginRequired,Medicine.createMedicine);
-   app.route('/api/timnsx/1').get(userHandlers.loginRequired,Medicine.searchbyManuName);
+   app.route('/api/user/all').post(userHandlers.loginRequired,Userinfo.readAllUserinfo);
+   app.route('/api/medicine/create').post(userHandlers.loginRequired,Medicine.createMedicine);
+   app.route('/api/medicine/search/manuname/1').get(userHandlers.loginRequired,Medicine.searchbyManuName);
+   app.route('/api/medicine/all/:pa').get(userHandlers.loginRequired,Medicine.readAllMedicine);
    app.route('/api/bill').post(userHandlers.loginRequired,Bill.createBill);
-   app.route('/auth/register')
+   app.route('/api/bill/showall/:pa').get(userHandlers.loginRequired,Bill.showBill);
+   app.route('/api/user/register').post(userHandlers.loginRequired,userHandlers.registerUser);
+   app.route('/auth/register/admin')
    	.post(userHandlers.register);
 
    app.route('/auth/sign_in')

@@ -45,18 +45,25 @@ exports.readUserinfobyID = function(req,res){
   });
 }
 exports.readAllUserinfo = function(req,res){
-  let perPage = 10;
-  let page = req.params.pa || 1;
-  Userinfo.find().skip((perPage * page)- perPage).limit(perPage).exec((err,allUserinfo) =>{
+  let skipCount = req.body.skipCount;
+  let page = req.body.pageSize
+  Userinfo.find().skip(skipCount).limit(page).exec((err,allUserinfo) =>{
     Userinfo.countDocuments((err,count) => {
-      if (err) return next(err);
+      if(allUserinfo.length){
         res.status(200).json({
           success: true,
-          message: 'Danh sách người dùng là:',
-          pagenow: page,
-          totalpages: Math.ceil(count/10),
-          Userinfo: allUserinfo,
+          message: 'Thong tin nguoi dung:',
+          Totalcount: count,
+          Userinfo: allUserinfo
         });
+      }
+      else{
+        res.status(403).json({
+          success: false,
+          message: 'Khong tim thay nguoi dung co ten la:',
+          name: req.body.name,
+        });
+      } 
     });
   });
 }

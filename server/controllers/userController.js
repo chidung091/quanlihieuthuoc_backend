@@ -36,7 +36,11 @@ exports.sign_in = function(req, res) {
               fullName: user.fullName, 
               _id: user._id
             }
-            return res.json({token: jwt.sign({user2}, 'RESTFULAPIs',{expiresIn: '300s'})});
+            const tokenn = jwt.sign({user2}, 'RESTFULAPIs',{expiresIn: '300d'});
+            return res.status(200).json({
+              id: user._id,
+              token: tokenn,
+            })
           }
         }
       });

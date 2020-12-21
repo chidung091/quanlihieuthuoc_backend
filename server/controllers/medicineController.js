@@ -64,3 +64,26 @@ exports.searchbyManuName = function(req,res){
         });
     });
 }
+exports.readAllMedicine = function(req,res){
+    let perPage = 10;
+    let page = req.params.pa || 1;
+    Medicine.find().skip((perPage * page)- perPage).limit(perPage).exec((err,allMedicine) =>{
+        Medicine.countDocuments((err,count) => {
+        if(allMedicine.length){
+          res.status(200).json({
+            success: true,
+            message: 'Danh sách thuốc:',
+            Page: page,
+            Totalpages: Math.ceil(count/10),
+            Medicine: allMedicine
+          });
+        }
+        else{
+          res.status(403).json({
+            success: false,
+            message: 'Khong có sản phẩm nào:',
+          });
+        } 
+      });
+    });
+  }
