@@ -78,8 +78,22 @@ exports.searchManu = function(req,res){
           });
     });
 } 
-exports.search = function(req,res){
-  
+exports.getAllMedicine = function(req,res){
+  Medicine.find().exec((err,allMedicine) =>{
+    if(allMedicine.length){
+      res.status(200).json({
+        success: true,
+        message: 'Danh sách thuốc:',
+        Medicine: allMedicine
+      });
+    }
+    else{
+      res.status(403).json({
+        success: false,
+        message: 'Khong có sản phẩm nào:',
+      });
+    }
+  });
 }
 exports.readAllMedicine = function(req,res){
     let skipCount = req.body.skipCount;

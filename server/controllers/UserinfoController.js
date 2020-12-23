@@ -68,12 +68,16 @@ exports.readAllUserinfo = function(req,res){
   });
 }
 exports.searchByName = function(req,res){
-  Userinfo.find({title: { $regex: '.*' + req.body.name + '.*'}}).then((allUserinfo)=>{
+  let skipCount = req.body.skipCount;
+  let page = req.body.pageSize
+  Userinfo.find({fullName: { $regex: '.*' + req.body.name + '.*'}}).skip(skipCount).limit(page).then((allUserinfo)=>{
+    Userinfo.countDocuments((err,count) => {
     if(allUserinfo.length){
       res.status(200).json({
         success: true,
         message: 'Thong tin nguoi dung co ten la:',
         name: req.body.name,
+        Totalcount: count,
         Userinfo: allUserinfo
       });
     }
@@ -84,6 +88,7 @@ exports.searchByName = function(req,res){
         name: req.body.name,
       });
     } 
+  });
   }).catch(function(error){
     res.status(500).json({
       success: false,

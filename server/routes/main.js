@@ -9,7 +9,7 @@ module.exports = function(app) {
 
    app.route('/api/user/:id').get(userHandlers.loginRequired,Userinfo.readUserinfobyID);
 
-   app.route('/api/user/search').get(userHandlers.loginRequired,Userinfo.searchByName);
+   app.route('/api/user/search/name').post(userHandlers.loginRequired,Userinfo.searchByName);
 
    app.route('/api/user/delete/:id').delete(userHandlers.loginRequired,Userinfo.deleteUserinfobyID);
 
@@ -21,9 +21,15 @@ module.exports = function(app) {
    app.route('/api/medicine/search/name').post(userHandlers.loginRequired,Medicine.searchByName);
    app.route('/api/medicine/delete/:id').delete(userHandlers.loginRequired,Medicine.deleteMedicinebyID);
    app.route('/api/medicine/all').post(userHandlers.loginRequired,Medicine.readAllMedicine);
+   app.route('/api/medicine/getall').get(userHandlers.loginRequired,Medicine.getAllMedicine);
    app.route('/api/medicine/update/:id').put(userHandlers.loginRequired,Medicine.updateByID);
+   
    app.route('/api/bill').post(userHandlers.loginRequired,Bill.createBill);
+   app.route('/api/bill/show/:id').get(userHandlers.loginRequired,Bill.BillInfoID);
    app.route('/api/bill/showall').post(userHandlers.loginRequired,Bill.showBill);
+   app.route('/api/bill/search/date').post(Bill.showBillperDate);
+   app.route('/api/thongke/nv').post(userHandlers.loginRequired,Bill.thongkehdbynv);
+   app.route('/api/thongke/nv/:id').get(Bill.thongkedoanhthu);
    app.route('/api/user/register').post(userHandlers.loginRequired,userHandlers.registerUser);
    app.route('/auth/register/admin')
    	.post(userHandlers.register);

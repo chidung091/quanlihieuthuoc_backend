@@ -42,6 +42,9 @@ const BillSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    tongtien:{
+        type: Number
+    },
 });
 mongoose.model('Bill',BillSchema);
 var Bill = mongoose.model('Bill',BillSchema);
