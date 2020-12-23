@@ -115,7 +115,7 @@ exports.showBillperDate = function(req,res){
   let skipCount = req.body.skipCount;
   let pageSize = req.body.pageSize;
     Bill.find({
-      "thoigianhd" : {"$et": new Date(req.body.date)}
+      "thoigianhd" : {"$eq": new Date(req.body.date)}
   }).skip(skipCount).limit(pageSize).exec((error,Billinfo) =>{
       Bill.countDocuments((err,count) => {
         if (err) return res.status(404).json({
