@@ -8,10 +8,18 @@ exports.createBill = function(req,res){
         _id: mongoose.Types.ObjectId(),
         loaihd: req.body.loaihd,
         sanpham: req.body.sanpham,
-        nguoilaphd: req.body.nguoilaphd,
+        idnv: req.body.idnv,
         thoigianhd: req.body.thoigianhd,
     });
     return bill.save().then((newBill) => {
+      newBill.sanpham.map((event) => {
+        Medicine.findOne({ '_id': event._id }, (err, med) => {
+          med.soluong -= event.soluong;
+          med.save();
+          return event;
+      });
+    });
+    Bill.aggregate({})
         return res.status(201).json({
             success: true,
             message: 'Đã tao hoa don thành công',
@@ -27,9 +35,9 @@ exports.createBill = function(req,res){
     });
 }
 exports.showBill = function(req,res){
-    let perPage = 10;
-    let page = req.params.pa || 1;
-    Bill.find().skip((perPage * page)- perPage).limit(perPage).exec((error,Billinfo) =>{
+  let skipCount = req.body.skipCount;
+  let pageSize = req.body.pageSize
+    Bill.find().skip(skipCount).limit(pageSize).exec((error,Billinfo) =>{
       Bill.countDocuments((err,count) => {
         if (err) return res.status(404).json({
             success: false,
@@ -39,9 +47,8 @@ exports.showBill = function(req,res){
           res.status(200).json({
             success: true,
             message: 'Danh sách người dùng là:',
-            pagenow: page,
-            totalpages: Math.ceil(count/10),
-            Userinfo: Billinfo,
+            Totalpages: count,
+            Billinfo: Billinfo,
           });
       });
     });
@@ -54,7 +61,7 @@ exports.searchByName = function(req,res){
         res.status(200).json({
           success: true,
           message: 'Thong tin loai hoa don'+name+' la:',
-          Userinfo: allNameinfo
+          Billinfo: allNameinfo
         });
       }
       else{

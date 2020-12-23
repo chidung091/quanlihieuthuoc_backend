@@ -33,48 +33,64 @@ exports.createMedicine = function(req,res){
     });
 }
 exports.searchByName = function(req,res){
-    Medicine.find({tenthuoc: { $regex: '.*' + req.body.name + '.*'}}).then((allMedicine) => {
-        res.status(200).json({
-            success: true,
-            message: 'Danh sach mat hang gom:',
-            Medicine: allMedicine,
-        })
-    }).catch((error)=>{
-        res.status(500).json({
-            success: loi.success,
-            message: loi.message,
-            err: error.message,
-        })
+    let skipCount = req.body.skipCount;
+    let page = req.body.pageSize
+    Medicine.find({tenthuoc: { $regex: '.*' + req.body.name + '.*'}}).skip(skipCount).limit(page).then((allMedicine) => {
+        Medicine.countDocuments((err,count) => {
+            if(allMedicine.length){
+              res.status(200).json({
+                success: true,
+                message: 'Thong tin nguoi dung:',
+                Totalcount: count,
+                Medicine: allMedicine
+              });
+            }
+            else{
+              res.status(403).json({
+                success: false,
+                message: 'Khong tim thay nguoi dung co ten la:',
+                name: req.body.name,
+              });
+            } 
+          });
     });
 } 
-exports.searchbyManuName = function(req,res){
-    let perpage = 10;
-    let pag = req.params.pa || 1;
-    Medicine.find({hangthuoc:{ $regex: '.*' + req.body.name + '.*'}}).skip((perpage*pag)-perpage).limit(perpage).then((manuMedicine) => {
-        res.status(200).json({
-            success: true,
-            message: 'Danh sach mat thuoc theo ten nha san xuat la:',
-            Medicine: manuMedicine,
-        });
-    }).catch((error)=>{
-        res.status(500).json({
-            success: true,
-            message: 'Khong tim thay san pham nao',
-            err: error.message,
-        });
+exports.searchManu = function(req,res){
+    let skipCount = req.body.skipCount;
+    let page = req.body.pageSize
+    Medicine.find({hangthuoc: { $regex: '.*' + req.body.name + '.*'}}).skip(skipCount).limit(page).then((allMedicine) => {
+        Medicine.countDocuments((err,count) => {
+            if(allMedicine.length){
+              res.status(200).json({
+                success: true,
+                message: 'Thong tin nguoi dung:',
+                Totalcount: count,
+                Medicine: allMedicine
+              });
+            }
+            else{
+              res.status(403).json({
+                success: false,
+                message: 'Khong tim thay nguoi dung co ten la:',
+                name: req.body.name,
+              });
+            } 
+          });
     });
+} 
+exports.search = function(req,res){
+  
 }
 exports.readAllMedicine = function(req,res){
-    let perPage = 10;
-    let page = req.params.pa || 1;
-    Medicine.find().skip((perPage * page)- perPage).limit(perPage).exec((err,allMedicine) =>{
+    let skipCount = req.body.skipCount;
+    let pageSize = req.body.pageSize
+    Medicine.find().skip(skipCount).limit(pageSize).exec((err,allMedicine) =>{
         Medicine.countDocuments((err,count) => {
         if(allMedicine.length){
           res.status(200).json({
             success: true,
             message: 'Danh sách thuốc:',
-            Page: page,
-            Totalpages: Math.ceil(count/10),
+            Totalcount: count,
             Medicine: allMedicine
           });
         }
@@ -87,3 +103,49 @@ exports.readAllMedicine = function(req,res){
       });
     });
   }
+  exports.deleteMedicinebyID = function(req,res){
+    const id = req.params.id;
+    Medicine.findByIdAndRemove(id).then((dlMedicine) => {
+      res.status(200).json({
+        success: true,
+        message: 'Nguoi dung co id la'+id+' da bi xoa :',
+        Medicine: dlMedicine,
+      });
+    }).catch((error)=>{
+      res.status(500).json({
+        success: false,
+        message: 'Khong tim thay thong tin '+id+'can xoa',
+        err: error.message,
+      });
+    });
+  }
+  exports.updateByID = function(req,res){
+  const id = req.params.id;
+  const updateObject = req.body;
+  const update = {
+    tenthuoc: req.body.tenthuoc,
+    mota: req.body.mota,
+    giathuocnhap: req.body.giathuocnhap,
+    giathuocban: req.body.giathuocban,
+    donvinhap: req.body.donvinhap,
+    nhasanxuat: req.body.nhasanxuat,
+    danhmuc: req.body.danhmuc,
+  }
+  Medicine.update({_id:id}, { $set:update}).exec().then(()=>{
+    Medicine.findOne({ '_id': req.params.id }, (err, med) => {
+        med.soluong += req.body.soluong;
+        med.save();
+    res.status(200).json({
+      success: true,
+      message: 'Nguoi dung co id la '+id+'da duoc cap nhat:',
+      updateMedicine: med,
+    });
+});
+  }).catch((error)=>{
+    res.status(500).json({
+      success: false,
+      message: 'Khong the update nguoidung',
+      err: error.message,
+    })
+  });
+}

@@ -33,7 +33,11 @@ const BillSchema = new mongoose.Schema({
         enum: ['nhap','xuat']
     },
     sanpham:[medicineSchema],
-    nguoilaphd: mongoose.Schema.Types.ObjectId,
+    idnv: mongoose.Schema.Types.ObjectId,
+    countsp:{
+        required:false,
+        type:Number
+    },
     thoigianhd:{
         type: Date,
         default: Date.now,

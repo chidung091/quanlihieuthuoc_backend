@@ -17,10 +17,13 @@ module.exports = function(app) {
 
    app.route('/api/user/all').post(userHandlers.loginRequired,Userinfo.readAllUserinfo);
    app.route('/api/medicine/create').post(userHandlers.loginRequired,Medicine.createMedicine);
-   app.route('/api/medicine/search/manuname/1').get(userHandlers.loginRequired,Medicine.searchbyManuName);
-   app.route('/api/medicine/all/:pa').get(userHandlers.loginRequired,Medicine.readAllMedicine);
+   app.route('/api/medicine/search/manu').post(userHandlers.loginRequired,Medicine.searchManu);
+   app.route('/api/medicine/search/name').post(userHandlers.loginRequired,Medicine.searchByName);
+   app.route('/api/medicine/delete/:id').delete(userHandlers.loginRequired,Medicine.deleteMedicinebyID);
+   app.route('/api/medicine/all').post(userHandlers.loginRequired,Medicine.readAllMedicine);
+   app.route('/api/medicine/update/:id').put(userHandlers.loginRequired,Medicine.updateByID);
    app.route('/api/bill').post(userHandlers.loginRequired,Bill.createBill);
-   app.route('/api/bill/showall/:pa').get(userHandlers.loginRequired,Bill.showBill);
+   app.route('/api/bill/showall').post(userHandlers.loginRequired,Bill.showBill);
    app.route('/api/user/register').post(userHandlers.loginRequired,userHandlers.registerUser);
    app.route('/auth/register/admin')
    	.post(userHandlers.register);

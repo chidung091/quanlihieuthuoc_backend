@@ -43,6 +43,6 @@ app.use(function(req, res) {
   res.status(404).send({ url: req.originalUrl + ' not found' })
 });
 app.listen(port, () => {
-  console.log(`Our server is running on port ${port}`);
+  console.log(`Backend của chúng tôi đang chạy ở cổng ${port}`);
 });
 module.exports == app;
