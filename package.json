@@ -4,6 +4,8 @@
   "description": "Chưa có",
   "main": "app.js",
   "scripts": {
+    "prestart": "git pull && npm install",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/app.js"
   },
