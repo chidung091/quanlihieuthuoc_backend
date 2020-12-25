@@ -17,7 +17,7 @@ require('../qlht/server/models/userModel.js');
 require('../qlht/server/models/UserinfoModel.js');
 require('../qlht/server/models/medicineModel.js');
 require('../qlht/server/models/BillModel.js');
-var mongoDB = 'mongodb://127.0.0.1/chamcong';
+var mongoDB = 'mongodb://127.0.0.1/hieuthuoc';
 mongoose.connect(mongoDB,{ useNewUrlParser: true,useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 mongoose.set('useCreateIndex', true);

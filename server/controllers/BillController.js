@@ -71,24 +71,23 @@ exports.thongkehdbynv = function(req,res){
   });
 }
 exports.thongkedoanhthu = function(req,res){
-  let id = req.params.id;
+  let id = req.body.id;
   Bill.aggregate(
     [{
         $match:{"idnv":id}},
         {$group: {
-            "_id": "",
             "tongtien": { $sum: "$tongtien" }
     }},
     {    $project: {
-            "_id": 0,
-            "Doanhthu": '$tongtien'
+            "_id": "",
+            "Doanhthu": "$tongtien"
     }}  
   ]).exec((err,save) => {
-      console.log(save[0].Doanhthu);
+      console.log(save);
       return res.status(201).json({
         success: true,
         message: 'Đã tao hoa don thành công',
-        Doanhthu: save[0].Doanhthu,
+        Doanhthu: save
     });
 });
 }
@@ -114,6 +113,23 @@ exports.showBill = function(req,res){
 exports.showBillperDate = function(req,res){
   let skipCount = req.body.skipCount;
   let pageSize = req.body.pageSize;
+  if(req.body.date==""){
+    Bill.find().skip(skipCount).limit(pageSize).exec((error,Billinfo) =>{
+      Bill.countDocuments((err,count) => {
+        if (err) return res.status(404).json({
+            success: false,
+            message: 'Không tìm thấy hóa đơn phù hợp!',
+            error: err.message,
+        });
+          res.status(200).json({
+            success: true,
+            message: 'Danh sách người dùng là:',
+            Totalpages: count,
+            Billinfo: Billinfo,
+          });
+      });
+    });
+  }else{
     Bill.find({
       "thoigianhd" : {"$eq": new Date(req.body.date)}
   }).skip(skipCount).limit(pageSize).exec((error,Billinfo) =>{
@@ -131,6 +147,7 @@ exports.showBillperDate = function(req,res){
           });
       });
     });
+  }
 }
 exports.BillInfoID = function(req,res){
   const id = req.params.id;
@@ -175,4 +192,55 @@ exports.searchByName = function(req,res){
         err: error.message,
       });
     });
+  }
+  exports.thongkedoanhthucuahang = function(req,res){
+    let thang = req.body.thang;
+    let nam = req.body.nam;
+    Bill.aggregate(
+      [ 
+        { $project: {
+        "year":{"$year":"$thoigianhd"},
+        "month":{"$month":"$thoigianhd"},
+        "tongtien": { "$sum": "$tongtien" },     
+   }},
+   { $match:{ 
+        "year" : nam,
+        "month": thang,     
+   }},
+   { $group: {
+        "_id": "",
+        "Doanhthu": { "$sum": "$tongtien" },
+   }}  
+    ]).exec((err,save) => {
+        console.log(save[0].Doanhthu);
+        return res.status(201).json({
+          success: true,
+          message: 'Đã tao hoa don thành công',
+          Doanhthu: save[0].Doanhthu
+      });
+  });
+  }
+  exports.thongkecuahang = function(req,res){
+    let thang = req.body.thang;
+    let nam = req.body.nam;
+    Bill.aggregate(
+      [ 
+        { $project: {
+        "year":{"$year":"$thoigianhd"},
+        "month":{"$month":"$thoigianhd"},
+        "thoigianhd":"$thoigianhd",
+        "tongtien":"$tongtien",
+   }},
+   { $match:{ 
+        "year" : nam,
+        "month": thang,     
+   }} 
+    ]).exec((err,save) => {
+        console.log(save);
+        return res.status(201).json({
+          success: true,
+          message: 'Đã tao hoa don thành công',
+          Doanhthu: save
+      });
+  });
   }

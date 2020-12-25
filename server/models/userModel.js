@@ -20,6 +20,9 @@ var UserSchema = new Schema({
     trim: true,
     required: true
   },
+  role: {
+    type: Number
+  },
   hash_password: {
     type: String,
     required: true

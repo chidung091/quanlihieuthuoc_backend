@@ -29,7 +29,9 @@ module.exports = function(app) {
    app.route('/api/bill/showall').post(userHandlers.loginRequired,Bill.showBill);
    app.route('/api/bill/search/date').post(Bill.showBillperDate);
    app.route('/api/thongke/nv').post(userHandlers.loginRequired,Bill.thongkehdbynv);
-   app.route('/api/thongke/nv/:id').get(Bill.thongkedoanhthu);
+   app.route('/api/thongke/nvds').post(userHandlers.loginRequired,Bill.thongkedoanhthu);
+   app.route('/api/thongke/doanhso').post(userHandlers.loginRequired,Bill.thongkedoanhthucuahang);
+   app.route('/api/thongke/spcuadoanhso').post(userHandlers.loginRequired,Bill.thongkecuahang);
    app.route('/api/user/register').post(userHandlers.loginRequired,userHandlers.registerUser);
    app.route('/auth/register/admin')
    	.post(userHandlers.register);
