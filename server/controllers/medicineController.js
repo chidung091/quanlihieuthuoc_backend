@@ -36,21 +36,24 @@ exports.searchByName = function(req,res){
     let skipCount = req.body.skipCount;
     let page = req.body.pageSize
     Medicine.find({tenthuoc: { $regex: '.*' + req.body.name + '.*'}}).skip(skipCount).limit(page).then((allMedicine) => {
-      let count = allMedicine.length;
-      if(Medicine.countDocuments>=count){
-            count1=Medicine.countDocuments;
-          }
-          else{
-            count1=allMedicine.length;
-          }            
+      Medicine.countDocuments((err,count) => {
           if(allMedicine.length){
+            if(req.body.name == ""){
               res.status(200).json({
                 success: true,
                 message: 'Thong tin nguoi dung:',
                 Totalcount: count,
                 Medicine: allMedicine
               });
+            }else{
+              res.status(200).json({
+                success: true,
+                message: 'Thong tin nguoi dung:',
+                Totalcount: allMedicine.length,
+                Medicine: allMedicine
+              });
             }
+          }
             else{
               res.status(403).json({
                 success: false,
@@ -59,6 +62,7 @@ exports.searchByName = function(req,res){
               });
             } 
     });
+  });
 } 
 exports.searchManu = function(req,res){
     let skipCount = req.body.skipCount;
