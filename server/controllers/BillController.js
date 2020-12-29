@@ -150,7 +150,7 @@ exports.showBillperDate = function(req,res){
   }
 }
 exports.loaihd = function(req,res){
-  const td = [{'name': 'nhap','name':'xuat'}];
+  const td = [{text:'Nhập',value:'nhap'},{text:'Xuất',value:'xuat'}];
   res.status(200).json({
     success: true,
     message: 'Thong tin hoa don theo id la:',
