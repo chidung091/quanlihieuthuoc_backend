@@ -36,8 +36,14 @@ exports.searchByName = function(req,res){
     let skipCount = req.body.skipCount;
     let page = req.body.pageSize
     Medicine.find({tenthuoc: { $regex: '.*' + req.body.name + '.*'}}).skip(skipCount).limit(page).then((allMedicine) => {
-          let count = allMedicine.length;
-            if(allMedicine.length){
+      let count = allMedicine.length;
+      if(Medicine.countDocuments>=count){
+            count1=Medicine.countDocuments;
+          }
+          else{
+            count1=allMedicine.length;
+          }            
+          if(allMedicine.length){
               res.status(200).json({
                 success: true,
                 message: 'Thong tin nguoi dung:',
