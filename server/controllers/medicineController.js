@@ -36,7 +36,7 @@ exports.searchByName = function(req,res){
     let skipCount = req.body.skipCount;
     let page = req.body.pageSize
     Medicine.find({tenthuoc: { $regex: '.*' + req.body.name + '.*'}}).skip(skipCount).limit(page).then((allMedicine) => {
-        Medicine.countDocuments((err,count) => {
+          let count = allMedicine.length;
             if(allMedicine.length){
               res.status(200).json({
                 success: true,
@@ -52,7 +52,6 @@ exports.searchByName = function(req,res){
                 name: req.body.name,
               });
             } 
-          });
     });
 } 
 exports.searchManu = function(req,res){

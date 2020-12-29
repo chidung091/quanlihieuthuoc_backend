@@ -69,8 +69,9 @@ exports.readAllUserinfo = function(req,res){
 }
 exports.searchByName = function(req,res){
   let skipCount = req.body.skipCount;
-  let page = req.body.pageSize
+  let page = req.body.pageSize;
   Userinfo.find({fullName: { $regex: '.*' + req.body.name + '.*'}}).skip(skipCount).limit(page).then((allUserinfo)=>{
+    console.log(allUserinfo.count);
     Userinfo.countDocuments((err,count) => {
     if(allUserinfo.length){
       res.status(200).json({

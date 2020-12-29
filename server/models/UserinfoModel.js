@@ -25,5 +25,6 @@ const UserinfoSchema = new mongoose.Schema({
     required:true,
   },
 });
+UserinfoSchema.index({'$**': 'text'});
 
 mongoose.model('Userinfo', UserinfoSchema);

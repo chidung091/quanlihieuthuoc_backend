@@ -213,11 +213,21 @@ exports.searchByName = function(req,res){
    }}  
     ]).exec((err,save) => {
         console.log(save[0].Doanhthu);
+        let Doanhthu=save[0].Doanhthu;
+        if(Doanhthu != undefined){
         return res.status(201).json({
           success: true,
-          message: 'Đã tao hoa don thành công',
+          message: 'Đã tao doanh thu',
           Doanhthu: save[0].Doanhthu
       });
+    }
+    else{
+      return res.status(304).json({
+        success: true,
+        message: 'Chưa tạo doanh thu',
+        Doanhthu: 0
+      })
+    }
   });
   }
   exports.thongkecuahang = function(req,res){
