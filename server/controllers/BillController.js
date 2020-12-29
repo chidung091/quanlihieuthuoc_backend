@@ -149,6 +149,14 @@ exports.showBillperDate = function(req,res){
     });
   }
 }
+exports.loaihd = function(req,res){
+  const td = {'name': 'nhap','name':'xuat'};
+  res.status(200).json({
+    success: true,
+    message: 'Thong tin hoa don theo id la:',
+    Billinfodetail: td,
+  });
+}
 exports.BillInfoID = function(req,res){
   const id = req.params.id;
   Bill.findById(id).then((infoBill) => {
