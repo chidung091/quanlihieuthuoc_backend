@@ -1,0 +1,32 @@
+version: '3.7'
+
+volumes:
+  mongo_data: {}
+  
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: inventory
+    volumes:
+      - mongo_data:/data/db
+
+
+  # api-pricing:
+  #   image: api-logistika-pricing:local
+  #   build: 
+  #     context: .
+  #   ports:
+  #     - 3010:3010
+  #   environment:
+  #     REDIS_HOST: redis
+  #     REDIS_PORT: 6379
+  #     RABBITMQ_URL: amqp://admin:password@rabbitmq:5672
+  #     TIGERSHEET_ENV: dev
+  #     TIGERSHEET_AUTH_TOKEN: abc
+  #     TS_ADMIN_PASSWORD: VuMJb1KJwjhjkwZivfNCLyGHyNuCfWi20X@Cj2y1rN
+  #     MONGODB_URI: mongodb://admin:password@mongo:27017/inventory

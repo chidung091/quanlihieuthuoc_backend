@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
 const medicineSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
